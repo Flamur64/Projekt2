@@ -20,13 +20,15 @@ app.get("/quiz", function (req, res) {
   })
 
   app.post("/anmeldung", function (req, res) {
-    const { name, password } = req.body
-    if (name === "gruppe1" && password === "12345") {
-      res.redirect("/quiz")
-    } else {
-      res.send("Anmeldung fehlgeschlagen.")
-    }
-  })
+    const { name } = req.body
+    const response = `
+        Herzlich Wilkommen: ${name}!<br>
+        <a href="/quiz">Zum Quiz</a>
+    `
+    res.send(response)
+})
+
+
 
 app.listen(port, function () {
     console.log("Server listening on port: " + port)
