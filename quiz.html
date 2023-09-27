@@ -1,3 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Quiz</title>
+    <style>
+        /* Füge dein CSS für das Styling hier hinzu */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .question-container {
+            text-align: left;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .feedback {
+            margin-top: 20px;
+        }
+
+        .score {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .quiz-ended {
+            background-color: #d9edf7;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>IT Quiz</h1>
+        <div class="question-container">
+            <p id="question">Frage 1: Was ist HTML?</p>
+            <ul id="options">
+                <li><button id="option1" onclick="checkAnswer('Eine Programmiersprache')">Eine Programmiersprache</button></li>
+                <li><button id="option2" onclick="checkAnswer('Ein Texteditor')">Ein Texteditor</button></li>
+                <li><button id="option3" onclick="checkAnswer('Eine Auszeichnungssprache')">Eine Auszeichnungssprache</button></li>
+            </ul>
+        </div>
+        <div class="feedback">
+            <p id="result"></p>
+        </div>
+        <div class="score">
+            <p>Punktzahl: <span id="score">0</span></p>
+        </div>
+        <div class="quiz-end">
+            <p id="quiz-end-message"></p>
+            <button onclick="restartQuiz()">Neues Quiz starten</button>
+        </div>
+    </div>
+    <script>
 const questions = [
     {
         question: "Was ist HTML?",
@@ -9,75 +82,120 @@ const questions = [
         options: ["Ein Dateiformat", "Ein Betriebssystem", "Eine Stylesheet-Sprache"],
         correctAnswer: "Eine Stylesheet-Sprache"
     },
-    // Füge hier die verbleibenden Fragen hinzu
+    {
+        question: "Was ist JavaScript?",
+        options: ["Ein Texteditor", "Eine Auszeichnungssprache", "Eine Programmiersprache"],
+        correctAnswer: "Eine Programmiersprache"
+    },
+    {
+        question: "Welche der folgenden ist eine Versionsverwaltungssoftware?",
+        options: ["Microsoft Word", "Git", "Photoshop"],
+        correctAnswer: "Git"
+    },
+    {
+        question: "Was ist ein Server?",
+        options: ["Ein Computerprogramm", "Ein Speichermedium", "Ein Computermonitor"],
+        correctAnswer: "Ein Computerprogramm"
+    },
+    {
+        question: "Was bedeutet die Abkürzung 'URL'?",
+        options: ["Universal Resource Locator", "Uniform Resource Locator", "Universal Remote Link"],
+        correctAnswer: "Uniform Resource Locator"
+    },
+    {
+        question: "Welche Dateiendung wird häufig für HTML-Dateien verwendet?",
+        options: [".html", ".txt", ".css"],
+        correctAnswer: ".html"
+    },
+    {
+        question: "Was ist ein Algorithmus?",
+        options: ["Eine Kaffeesorte", "Eine Kochanleitung", "Eine schrittweise Anweisung zur Lösung eines Problems"],
+        correctAnswer: "Eine schrittweise Anweisung zur Lösung eines Problems"
+    },
+    {
+        question: "Was ist ein Betriebssystem?",
+        options: ["Eine Textverarbeitungssoftware", "Die zentrale Verwaltung von Hardware und Software auf einem Computer", "Eine Bildbearbeitungssoftware"],
+        correctAnswer: "Die zentrale Verwaltung von Hardware und Software auf einem Computer"
+    },
+    {
+        question: "Welche Programmiersprache wird oft für die Entwicklung von Android-Apps verwendet?",
+        options: ["Java", "Python", "C#"],
+        correctAnswer: "Java"
+    },
+    // Füge hier die beiden neuen Fragen hinzu
 ];
 
-let currentQuestionIndex = 0;
-let score = 0;
 
-function displayQuestion() {
-    const questionElement = document.getElementById("question");
-    const optionsList = document.getElementById("options");
-    const currentQuestion = questions[currentQuestionIndex];
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-    questionElement.textContent = `Frage ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+        function displayQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsList = document.getElementById("options");
+            const currentQuestion = questions[currentQuestionIndex];
 
-    optionsList.innerHTML = "";
-    currentQuestion.options.forEach((option) => {
-        const optionItem = document.createElement("li");
-        const optionButton = document.createElement("button");
-        optionButton.textContent = option;
-        optionButton.addEventListener("click", () => checkAnswer(option));
-        optionItem.appendChild(optionButton);
-        optionsList.appendChild(optionItem);
-    });
-}
+            questionElement.textContent = `Frage ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
 
-function checkAnswer(selectedOption) {
-    const currentQuestion = questions[currentQuestionIndex];
+            optionsList.innerHTML = "";
+            currentQuestion.options.forEach((option) => {
+                const optionItem = document.createElement("li");
+                const optionButton = document.createElement("button");
+                optionButton.textContent = option;
+                optionButton.id = option; // Setze die ID des Buttons auf den Optionswert
+                optionButton.addEventListener("click", () => checkAnswer(option));
+                optionItem.appendChild(optionButton);
+                optionsList.appendChild(optionItem);
+            });
+        }
 
-    if (selectedOption === currentQuestion.correctAnswer) {
-        score++;
-        alert("Richtig!");
-    } else {
-        alert(`Falsch. Die richtige Antwort ist: ${currentQuestion.correctAnswer}`);
-    }
+        function checkAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
 
-    currentQuestionIndex++;
+            if (selectedOption === currentQuestion.correctAnswer) {
+                score++;
+                alert("Richtig!");
+            } else {
+                alert(`Falsch. Die richtige Antwort ist: ${currentQuestion.correctAnswer}`);
+            }
 
-    if (currentQuestionIndex < questions.length) {
-        displayQuestion();
-    } else {
-        endQuiz();
-    }
+            currentQuestionIndex++;
 
-    updateScore();
-}
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                endQuiz();
+            }
 
-function updateScore() {
-    document.getElementById("score").textContent = score;
-}
+            updateScore();
+        }
 
-function endQuiz() {
-    const quizEndMessage = document.getElementById("quiz-end-message");
-    const quizContainer = document.querySelector(".quiz-container");
-    quizContainer.classList.add("quiz-ended");
+        function updateScore() {
+            document.getElementById("score").textContent = score;
+        }
 
-    if (score === questions.length) {
-        quizEndMessage.textContent = "Gut gemacht! Du hast alle Fragen richtig beantwortet!";
-    } else {
-        quizEndMessage.textContent = "Weiter üben!";
-    }
-}
+        function endQuiz() {
+            const quizEndMessage = document.getElementById("quiz-end-message");
+            const quizContainer = document.querySelector(".quiz-container");
+            quizContainer.classList.add("quiz-ended");
 
-function restartQuiz() {
-    currentQuestionIndex = 0;
-    score = 0;
-    document.querySelector(".quiz-container").classList.remove("quiz-ended");
-    displayQuestion();
-    updateScore();
-    document.getElementById("quiz-end-message").textContent = "";
-}
+            if (score === questions.length) {
+                quizEndMessage.textContent = "Gut gemacht! Du hast alle Fragen richtig beantwortet!";
+            } else {
+                quizEndMessage.textContent = "Weiter üben!";
+            }
+        }
 
-// Starte das Quiz, wenn die Seite geladen wird
-window.onload = displayQuestion;
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.querySelector(".quiz-container").classList.remove("quiz-ended");
+            displayQuestion();
+            updateScore();
+            document.getElementById("quiz-end-message").textContent = "";
+        }
+
+        // Starte das Quiz, wenn die Seite geladen wird
+        window.onload = displayQuestion;
+    </script>
+</body>
+</html>
