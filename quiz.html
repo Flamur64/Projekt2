@@ -1,0 +1,83 @@
+const questions = [
+    {
+        question: "Was ist HTML?",
+        options: ["Eine Programmiersprache", "Ein Texteditor", "Eine Auszeichnungssprache"],
+        correctAnswer: "Eine Auszeichnungssprache"
+    },
+    {
+        question: "Was ist CSS?",
+        options: ["Ein Dateiformat", "Ein Betriebssystem", "Eine Stylesheet-Sprache"],
+        correctAnswer: "Eine Stylesheet-Sprache"
+    },
+    // Füge hier die verbleibenden Fragen hinzu
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+function displayQuestion() {
+    const questionElement = document.getElementById("question");
+    const optionsList = document.getElementById("options");
+    const currentQuestion = questions[currentQuestionIndex];
+
+    questionElement.textContent = `Frage ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+
+    optionsList.innerHTML = "";
+    currentQuestion.options.forEach((option) => {
+        const optionItem = document.createElement("li");
+        const optionButton = document.createElement("button");
+        optionButton.textContent = option;
+        optionButton.addEventListener("click", () => checkAnswer(option));
+        optionItem.appendChild(optionButton);
+        optionsList.appendChild(optionItem);
+    });
+}
+
+function checkAnswer(selectedOption) {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    if (selectedOption === currentQuestion.correctAnswer) {
+        score++;
+        alert("Richtig!");
+    } else {
+        alert(`Falsch. Die richtige Antwort ist: ${currentQuestion.correctAnswer}`);
+    }
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+    } else {
+        endQuiz();
+    }
+
+    updateScore();
+}
+
+function updateScore() {
+    document.getElementById("score").textContent = score;
+}
+
+function endQuiz() {
+    const quizEndMessage = document.getElementById("quiz-end-message");
+    const quizContainer = document.querySelector(".quiz-container");
+    quizContainer.classList.add("quiz-ended");
+
+    if (score === questions.length) {
+        quizEndMessage.textContent = "Gut gemacht! Du hast alle Fragen richtig beantwortet!";
+    } else {
+        quizEndMessage.textContent = "Weiter üben!";
+    }
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    document.querySelector(".quiz-container").classList.remove("quiz-ended");
+    displayQuestion();
+    updateScore();
+    document.getElementById("quiz-end-message").textContent = "";
+}
+
+// Starte das Quiz, wenn die Seite geladen wird
+window.onload = displayQuestion;
