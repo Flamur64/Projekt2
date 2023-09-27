@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quizspiel</title>
+    <title>Quizspiel: Allgemeinwissen IT</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,9 +15,13 @@
 
         .start-quiz-container {
             text-align: center;
-            margin-top: 20px;
-        }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
 
+        }
         .start-quiz-container label,
         .start-quiz-container input,
         .start-quiz-container button {
@@ -131,7 +135,7 @@
         <input type="text" id="playerName" placeholder="Gib deinen Namen ein">
         <button onclick="startQuiz()">Quiz starten</button>
     </div>
-
+    
     <div class="quiz-container">
         <h1>IT Quiz</h1>
         <p id="playerNameDisplay"></p>
@@ -156,7 +160,8 @@
     </div>
 
     <script>
-        const questions = [
+    const questions = [
+    // Allgemeine IT Fragen
         {
         question: "Was ist HTML?",
         options: ["Eine Programmiersprache", "Ein Texteditor", "Eine Auszeichnungssprache"],
@@ -224,7 +229,7 @@
                 const optionItem = document.createElement("li");
                 const optionButton = document.createElement("button");
                 optionButton.textContent = option;
-                optionButton.id = option; // Setze die ID des Buttons auf den Optionswert
+                optionButton.id = option;
                 optionButton.addEventListener("click", () => checkAnswer(option));
                 optionItem.appendChild(optionButton);
                 optionsList.appendChild(optionItem);

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizspiel: AWS Cloud Practitioner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            color: #17a2b8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .start-quiz-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+
+        }
+        .start-quiz-container label,
+        .start-quiz-container input,
+        .start-quiz-container button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .start-quiz-container label {
+            color: #17a2b8;
+        }
+
+        .start-quiz-container input,
+        .start-quiz-container button {
+            width: 200px;
+        }
+
+        .start-quiz-container button {
+            background-color: #17a2b8;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .start-quiz-container button:hover {
+            background-color: #138496;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: none;
+        }
+
+        .quiz-container h1 {
+            color: #17a2b8;
+        }
+
+        .player-name {
+            color: #17a2b8; /* Set the color of the player's name to match the title color */
+        }
+
+        .question-container p {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul#options {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul#options li {
+            margin: 10px 0;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .feedback p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .score p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .quiz-end {
+            margin-top: 20px;
+        }
+
+        .quiz-end p {
+            font-size: 18px;
+        }
+
+        .quiz-end button {
+            background-color: #17a2b8;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quiz-end button:hover {
+            background-color: #138496;
+        }
+
+        .quiz-ended {
+            background-color: #d9edf7;
+        }
+    </style>
+</head>
+<body>
+    <div class="start-quiz-container">
+        <label for="playerName">Spielername:</label>
+        <input type="text" id="playerName" placeholder="Gib deinen Namen ein">
+        <button onclick="startQuiz()">Quiz starten</button>
+    </div>
+    
+    <div class="quiz-container">
+        <h1>IT Quiz</h1>
+        <p id="playerNameDisplay"></p>
+        <div class="question-container">
+            <p id="question">Frage 1: Was ist HTML?</p>
+            <ul id="options">
+                <li><button id="option1" onclick="checkAnswer('Eine Programmiersprache')">Eine Programmiersprache</button></li>
+                <li><button id="option2" onclick="checkAnswer('Ein Texteditor')">Ein Texteditor</button></li>
+                <li><button id="option3" onclick="checkAnswer('Eine Auszeichnungssprache')">Eine Auszeichnungssprache</button></li>
+            </ul>
+        </div>
+        <div class="feedback">
+            <p id="result"></p>
+        </div>
+        <div class="score">
+            <p>Punktzahl: <span id="score">0</span></p>
+        </div>
+        <div class="quiz-end">
+            <p id="quiz-end-message"></p>
+            <button onclick="restartQuiz()">Neues Quiz starten</button>
+        </div>
+    </div>
+
+    <script>
+    const questions = [
+    // Neue Fragen für den AWS Cloud Practitioner
+    {
+        question: "Was ist AWS?",
+        options: ["Amazon Web Services", "Advanced Web Services", "Amazon Web Solutions"],
+        correctAnswer: "Amazon Web Services"
+    },
+    {
+        question: "Welcher AWS-Dienst wird für die skalierbare Bereitstellung von Anwendungen verwendet?",
+        options: ["Amazon S3", "Amazon EC2", "Amazon RDS"],
+        correctAnswer: "Amazon EC2"
+    },
+    {
+        question: "Was ist die AWS-Shared Responsibility Model?",
+        options: ["Ein AWS-Sicherheitsdienst", "Ein Sicherheitszertifikat", "Ein Sicherheitskonzept, das die Verantwortlichkeiten von AWS und dem Kunden definiert"],
+        correctAnswer: "Ein Sicherheitskonzept, das die Verantwortlichkeiten von AWS und dem Kunden definiert"
+    },
+    {
+        question: "Welche AWS-Dienste bieten Speicherlösungen?",
+        options: ["Amazon EC2", "Amazon S3", "Amazon RDS"],
+        correctAnswer: "Amazon S3"
+    },
+    {
+        question: "Was ist die AWS-Grundlage für Identitäts- und Zugriffsmanagement?",
+        options: ["IAM", "SSH", "SSL"],
+        correctAnswer: "IAM"
+    },
+    {
+        question: "Welcher AWS-Dienst ermöglicht die Verwaltung von relationalen Datenbanken?",
+        options: ["Amazon EC2", "Amazon RDS", "Amazon S3"],
+        correctAnswer: "Amazon RDS"
+    },
+    {
+        question: "Was ist Amazon S3?",
+        options: ["Eine Cloud-Berechnungsdienst", "Ein Datenspeicherdienst", "Ein Videostreaming-Dienst"],
+        correctAnswer: "Ein Datenspeicherdienst"
+    },
+    {
+        question: "Welcher AWS-Dienst bietet Serverless-Computing?",
+        options: ["Amazon EC2", "AWS Lambda", "Amazon RDS"],
+        correctAnswer: "AWS Lambda"
+    },
+    {
+        question: "Was bedeutet IAM in AWS?",
+        options: ["Internet Access Management", "Identity and Access Management", "Information Access Model"],
+        correctAnswer: "Identity and Access Management"
+    },
+    {
+        question: "Was ist die AWS-Region?",
+        options: ["Ein globales Rechenzentrum", "Eine Sammlung von Availability Zones", "Ein Netzwerkprotokoll"],
+        correctAnswer: "Eine Sammlung von Availability Zones"
+    }
+];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function displayQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsList = document.getElementById("options");
+            const currentQuestion = questions[currentQuestionIndex];
+
+            questionElement.textContent = `Frage ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+
+            optionsList.innerHTML = "";
+            currentQuestion.options.forEach((option) => {
+                const optionItem = document.createElement("li");
+                const optionButton = document.createElement("button");
+                optionButton.textContent = option;
+                optionButton.id = option;
+                optionButton.addEventListener("click", () => checkAnswer(option));
+                optionItem.appendChild(optionButton);
+                optionsList.appendChild(optionItem);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = questions[currentQuestionIndex];
+
+            if (selectedOption === currentQuestion.correctAnswer) {
+                score++;
+                alert("Richtig!");
+            } else {
+                alert(`Falsch. Die richtige Antwort ist: ${currentQuestion.correctAnswer}`);
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                endQuiz();
+            }
+
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById("score").textContent = score;
+        }
+
+        function endQuiz() {
+            const quizEndMessage = document.getElementById("quiz-end-message");
+            const quizContainer = document.querySelector(".quiz-container");
+            quizContainer.classList.add("quiz-ended");
+
+            if (score === questions.length) {
+                quizEndMessage.textContent = "Gut gemacht! Du hast alle Fragen richtig beantwortet!";
+            } else {
+                quizEndMessage.textContent = "Weiter üben!";
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.querySelector(".quiz-container").classList.remove("quiz-ended");
+            displayQuestion();
+            updateScore();
+            document.getElementById("quiz-end-message").textContent = "";
+        }
+
+        // Function to start the quiz
+        function startQuiz() {
+            const playerNameInput = document.getElementById("playerName");
+            const playerName = playerNameInput.value.trim(); // Get player name and trim whitespace
+
+            if (playerName === "") {
+                alert("Bitte gib deinen Namen ein, um das Quiz zu starten.");
+                return;
+            }
+
+            // Hide the start-quiz-container
+            document.querySelector(".start-quiz-container").style.display = "none";
+
+            // Display the quiz container
+            const quizContainer = document.querySelector(".quiz-container");
+            quizContainer.style.display = "block";
+
+            // Display the player's name during the quiz
+            const playerNameDisplay = document.getElementById("playerNameDisplay");
+            playerNameDisplay.textContent = `Hallo ${playerName}!`;
+
+            // Now, you can start displaying questions and options
+            displayQuestion();
+        }
+
+        // Starte das Quiz, wenn die Seite geladen wird
+        // window.onload = displayQuestion; // You can remove this line
+    </script>
+</body>
+</html>
