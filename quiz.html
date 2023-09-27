@@ -3,35 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Quiz</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Add Google Fonts Link -->
-    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-
-
-    <style>   /* Custom CSS for title */
-        .title {
-            font-family: 'Varela Round', sans-serif !important;
-            font-size: 2rem;
-            font-weight: bold;
-            text-align: left;
-            margin-bottom: 0;
-            letter-spacing: 1.5px;
+    <title>Quizspiel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            color: #17a2b8;
+            margin: 0;
+            padding: 0;
         }
-        
-        /* Custom CSS for "Aufgabenliste" title */
-        h1.mt-5 {
-            font-family: 'Varela Round', sans-serif !important;
-            font-size: 2.2rem !important; 
-            font-weight: 600; /* semi-bold font */
-            text-align: left !important;
+
+        .start-quiz-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .start-quiz-container label,
+        .start-quiz-container input,
+        .start-quiz-container button {
+            font-size: 16px;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .start-quiz-container label {
+            color: #17a2b8;
+        }
+
+        .start-quiz-container input,
+        .start-quiz-container button {
+            width: 200px;
+        }
+
+        .start-quiz-container button {
+            background-color: #17a2b8;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .start-quiz-container button:hover {
+            background-color: #138496;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: none;
+        }
+
+        .quiz-container h1 {
+            color: #17a2b8;
+        }
+
+        .player-name {
+            color: #17a2b8; /* Set the color of the player's name to match the title color */
+        }
+
+        .question-container p {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul#options {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul#options li {
+            margin: 10px 0;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .feedback p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .score p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .quiz-end {
+            margin-top: 20px;
+        }
+
+        .quiz-end p {
+            font-size: 18px;
+        }
+
+        .quiz-end button {
+            background-color: #17a2b8;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quiz-end button:hover {
+            background-color: #138496;
+        }
+
+        .quiz-ended {
+            background-color: #d9edf7;
         }
     </style>
 </head>
 <body>
+    <div class="start-quiz-container">
+        <label for="playerName">Spielername:</label>
+        <input type="text" id="playerName" placeholder="Gib deinen Namen ein">
+        <button onclick="startQuiz()">Quiz starten</button>
+    </div>
+
     <div class="quiz-container">
         <h1>IT Quiz</h1>
+        <p id="playerNameDisplay"></p>
         <div class="question-container">
             <p id="question">Frage 1: Was ist HTML?</p>
             <ul id="options">
@@ -51,9 +154,10 @@
             <button onclick="restartQuiz()">Neues Quiz starten</button>
         </div>
     </div>
+
     <script>
-const questions = [
-    {
+        const questions = [
+        {
         question: "Was ist HTML?",
         options: ["Eine Programmiersprache", "Ein Texteditor", "Eine Auszeichnungssprache"],
         correctAnswer: "Eine Auszeichnungssprache"
@@ -103,9 +207,7 @@ const questions = [
         options: ["Java", "Python", "C#"],
         correctAnswer: "Java"
     },
-    // Füge hier die beiden neuen Fragen hinzu
-];
-
+        ];
 
         let currentQuestionIndex = 0;
         let score = 0;
@@ -175,8 +277,33 @@ const questions = [
             document.getElementById("quiz-end-message").textContent = "";
         }
 
+        // Function to start the quiz
+        function startQuiz() {
+            const playerNameInput = document.getElementById("playerName");
+            const playerName = playerNameInput.value.trim(); // Get player name and trim whitespace
+
+            if (playerName === "") {
+                alert("Bitte gib deinen Namen ein, um das Quiz zu starten.");
+                return;
+            }
+
+            // Hide the start-quiz-container
+            document.querySelector(".start-quiz-container").style.display = "none";
+
+            // Display the quiz container
+            const quizContainer = document.querySelector(".quiz-container");
+            quizContainer.style.display = "block";
+
+            // Display the player's name during the quiz
+            const playerNameDisplay = document.getElementById("playerNameDisplay");
+            playerNameDisplay.textContent = `Hallo ${playerName}!`;
+
+            // Now, you can start displaying questions and options
+            displayQuestion();
+        }
+
         // Starte das Quiz, wenn die Seite geladen wird
-        window.onload = displayQuestion;
+        // window.onload = displayQuestion; // You can remove this line
     </script>
 </body>
 </html>

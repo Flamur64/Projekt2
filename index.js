@@ -8,27 +8,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-    res.send('<div style="display: flex; justify-content: center; align-items: center; height: 100vh;"><a href="/anmeldung" style="text-decoration: none; background-color: #007bff; color: #fff; padding: 10px 20px; border-radius: 5px; font-weight: bold;">->Login zum Quizspiel<-</a></div>')
-  })
+  res.send('<html><head><style>body { background-color: #343a40; font-family: Arial, sans-serif; }</style></head><body style="display: flex; justify-content: center; align-items: center; height: 100vh;"><a href="/quiz" style="text-decoration: none; background-color: #17a2b8; color: #fff; padding: 30px 60px; border-radius: 10px; font-weight: bold;">Zum Quizspiel</a></body></html>')
+})
 
-app.get("/anmeldung", function (req, res) {
-    res.sendFile("anmeldung.html", { root: "./" })
-  })
-  
 app.get("/quiz", function (req, res) {
     res.sendFile("quiz.html", { root: "./" })
   })
-
-  app.post("/anmeldung", function (req, res) {
-    const { name } = req.body
-    const response = `
-        Herzlich Wilkommen: ${name}!<br>
-        <a href="/quiz">Zum Quiz</a>
-    `
-    res.send(response)
-})
-
-
 
 app.listen(port, function () {
     console.log("Server listening on port: " + port)
