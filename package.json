@@ -1,7 +1,7 @@
 {
   "name": "projekt2",
   "version": "1.0.0",
-  "description": "Andreas, Levent, Ingo, Muhammed und Flamur",
+  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/Flamur64/Projekt2.git"
   },
-  "author": "Andreas, Levent, Ingo, Muhammed und Flamur",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Flamur64/Projekt2/issues"
